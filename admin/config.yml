@@ -1,0 +1,1611 @@
+backend:
+  name: git-gateway
+  accept_roles:
+    - admin
+    - editor
+media_folder: theme/assets/images
+public_folder: /assets/images
+collections:
+  - name: pages
+    label: Pages
+    identifier_field: title
+    extension: md
+    create: false
+    delete: false
+    slug: '{{slug}}'
+    editor:
+      preview: false
+    folder: cms/pages
+    fields:
+      - label: Title
+        name: title
+        widget: string
+      - label: Publish Date
+        name: date
+        widget: datetime
+      - label: Layout
+        widget: hidden
+        name: layout
+        default: '{{slug}}.html'
+      - &ref_0
+        label: Seo
+        name: seo
+        widget: object
+        collapsed: true
+        fields:
+          - label: Title
+            name: title
+            widget: string
+            required: false
+          - label: Description
+            name: description
+            widget: string
+            required: false
+          - label: No index
+            name: noindex
+            widget: boolean
+            default: false
+            required: false
+          - label: Open Graph Title
+            name: og:title
+            widget: string
+            required: false
+          - label: Open Graph Image
+            name: og:image
+            widget: image
+            required: false
+            media_library:
+              config:
+                multiple: false
+          - label: Twitter Title
+            name: twitter:title
+            widget: string
+            default: summary
+            required: false
+          - label: Twitter Card
+            name: twitter:card
+            widget: string
+            default: summary
+            required: false
+          - label: Twitter Site
+            name: twitter:site
+            widget: string
+            required: false
+          - label: Twitter Creator
+            name: twitter:creator
+            widget: string
+            required: false
+          - label: Additional HTML tags
+            name: additional_tags
+            widget: text
+            required: false
+  - name: work
+    label: Works
+    folder: cms/work
+    create: true
+    identifier_field: name
+    extension: md
+    slug: '{{slug}}'
+    fields:
+      - hint: ''
+        name: title
+        label: Name
+        widget: string
+        required: true
+      - hint: ''
+        name: created-on
+        label: Created On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: updated-on
+        label: Updated On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: published-on
+        label: Published On
+        widget: datetime
+        required: false
+      - hint: Will show up in the hero of the works page.
+        name: f_featured
+        label: Featured
+        widget: boolean
+        required: false
+      - hint: ''
+        name: f_card-image
+        label: Card image
+        widget: object
+        required: false
+        fields:
+          - hint: ''
+            name: url
+            label: Image
+            widget: image
+            required: false
+            allow_multiple: false
+          - hint: Image Alt
+            name: alt
+            label: alt
+            widget: string
+            required: false
+      - hint: ''
+        name: f_category
+        label: Category
+        widget: relation
+        required: false
+        collection: category
+        value_field: cms/category/{{slug}}.md
+        search_fields:
+          - slug
+          - name
+        display_fields:
+          - title
+        multiple: false
+      - hint: ''
+        name: f_hero-title
+        label: Hero title
+        widget: string
+        required: false
+      - hint: ''
+        name: f_client-name
+        label: Tijdsspanne
+        widget: string
+        required: false
+      - hint: ''
+        name: f_client-service
+        label: Service
+        widget: string
+        required: false
+      - hint: ''
+        name: f_project-year
+        label: Jaar
+        widget: string
+        required: false
+      - hint: Deze volgorde aanhouden voor de homepage
+        name: f_project
+        label: Project
+        widget: string
+        required: false
+      - hint: At least two images
+        name: f_hero-images
+        label: Hero images
+        widget: list
+        required: false
+        fields:
+          - hint: ''
+            name: url
+            label: Image
+            widget: image
+            required: false
+            allow_multiple: false
+          - hint: Image Alt
+            name: alt
+            label: alt
+            widget: string
+            required: false
+      - hint: ''
+        name: f_introduction-paragraph
+        label: Introduction paragraph
+        widget: text
+        required: false
+      - hint: ''
+        name: f_banner-image
+        label: Banner image
+        widget: object
+        required: false
+        fields:
+          - hint: ''
+            name: url
+            label: Image
+            widget: image
+            required: false
+            allow_multiple: false
+          - hint: Image Alt
+            name: alt
+            label: alt
+            widget: string
+            required: false
+      - hint: ''
+        name: f_what-we-did
+        label: Ons geleverde werk
+        widget: text
+        required: false
+      - hint: ''
+        name: f_project-showcase-images
+        label: Project showcase images
+        widget: list
+        required: false
+        fields:
+          - hint: ''
+            name: url
+            label: Image
+            widget: image
+            required: false
+            allow_multiple: false
+          - hint: Image Alt
+            name: alt
+            label: alt
+            widget: string
+            required: false
+      - label: Tags
+        widget: hidden
+        name: tags
+        default: work
+      - label: Layout
+        widget: hidden
+        name: layout
+        default: '[work].html'
+      - label: Publish Date
+        name: date
+        widget: datetime
+      - *ref_0
+  - name: category
+    label: Categories
+    folder: cms/category
+    create: true
+    identifier_field: name
+    extension: md
+    slug: '{{slug}}'
+    fields:
+      - hint: ''
+        name: title
+        label: Name
+        widget: string
+        required: true
+      - hint: ''
+        name: created-on
+        label: Created On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: updated-on
+        label: Updated On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: published-on
+        label: Published On
+        widget: datetime
+        required: false
+      - label: Tags
+        widget: hidden
+        name: tags
+        default: category
+      - label: Layout
+        widget: hidden
+        name: layout
+        default: '[category].html'
+      - label: Publish Date
+        name: date
+        widget: datetime
+      - *ref_0
+  - label: Theme Settings
+    name: settings
+    identifier_field: title
+    extension: json
+    create: false
+    delete: false
+    slug: '{{slug}}'
+    editor:
+      preview: false
+    files:
+      - label: General
+        name: site
+        file: cms/_data/settings/site.json
+        fields:
+          - label: Title
+            name: title
+            widget: hidden
+            default: General
+          - hint: Full domain url (needed for a correct sitemap file)
+            name: domain
+            label: Domain
+            widget: string
+            required: false
+          - name: favicon
+            label: Favicon
+            widget: image
+            allow_multiple: false
+            required: false
+          - name: apple_touch_icon
+            label: Apple Touch Icon
+            widget: image
+            allow_multiple: false
+            required: false
+          - name: header_additional_content
+            label: Additional Content Header
+            hint: Content here will be placed before </head> tag
+            widget: text
+            required: false
+          - name: footer_additional_content
+            label: Additional Content Footer
+            hint: Content here will be placed before </body> tag
+            widget: text
+            required: false
+          - name: images_optimization
+            label: Images Optimization
+            widget: object
+            collapsed: false
+            fields:
+              - label: Image Formats
+                name: formats
+                widget: select
+                multiple: true
+                options:
+                  - label: Avif
+                    value: avif
+                  - label: Webp
+                    value: webp
+              - label: Image Dimensions
+                name: dimensions
+                widget: select
+                multiple: true
+                options:
+                  - label: '500'
+                    value: 500
+                  - label: '800'
+                    value: 800
+                  - label: '1080'
+                    value: 1080
+                  - label: '1600'
+                    value: 1600
+                  - label: '2000'
+                    value: 2000
+                  - label: '2600'
+                    value: 2600
+      - label: Colors
+        name: colors
+        file: cms/_data/colors.json
+        fields:
+          - label: Title
+            name: title
+            widget: hidden
+            default: Colors
+      - label: Texts
+        name: texts
+        file: cms/_data/texts.json
+        fields:
+          - label: Title
+            name: title
+            widget: hidden
+            default: Texts
+          - hint: 'Original text: Projecten, key: 421c1562'
+            label: Text
+            name: 421c1562
+            widget: string
+          - hint: 'Original text: Over Ons, key: 234bd928'
+            label: Text
+            name: 234bd928
+            widget: string
+          - hint: 'Original text: Contact, key: -64104400'
+            label: Text
+            name: '-64104400'
+            widget: string
+          - hint: 'Original text: Persoonlijke aandacht, key: 352a4095'
+            label: Text
+            name: 352a4095
+            widget: string
+          - hint: 'Original text: voor uw interieur., key: 7583fcb3'
+            label: Text
+            name: 7583fcb3
+            widget: string
+          - hint: >-
+              Original text: Vrijblijvend oriënterend gesprek? Kan altijd. Klik
+              hier om contact op te nemen., key: 7d780a6a
+            label: Text
+            name: 7d780a6a
+            widget: string
+          - hint: 'Original text: Passie voor interieurbouw, key: -430d280d'
+            label: Text
+            name: '-430d280d'
+            widget: string
+          - hint: >-
+              Original text: Bij Kronenberg Interieurbouw kunt u terecht voor
+              prachtige op maat gemaakte interieurs, houten elementen in de tuin
+              en nog veel meer. We hechten waarde aan nauwkeurigheid en oog voor
+              detail., key: -3ecc4e86
+            label: Text
+            name: '-3ecc4e86'
+            widget: text
+          - hint: 'Original text: Meer over ons, key: -a92197d'
+            label: Text
+            name: '-a92197d'
+            widget: string
+          - hint: 'Original text: Aanvang, key: 1a4056d2'
+            label: Text
+            name: 1a4056d2
+            widget: string
+          - hint: 'Original text: Eerste gesprek & details., key: 6d81c797'
+            label: Text
+            name: 6d81c797
+            widget: string
+          - hint: >-
+              Original text: Elk project start met een vrijblijvend gesprek,
+              waarna wij de offerte en planning doorsturen., key: 98c47a0
+            label: Text
+            name: 98c47a0
+            widget: text
+          - hint: >-
+              Original text: Vragen over de aanvangsfase? Stel ze hier., key:
+              -1dbc0db4
+            label: Text
+            name: '-1dbc0db4'
+            widget: string
+          - hint: 'Original text: Werk in uitvoering, key: 499d67be'
+            label: Text
+            name: 499d67be
+            widget: string
+          - hint: 'Original text: De touwtjes samen in handen., key: 2e0d2e33'
+            label: Text
+            name: 2e0d2e33
+            widget: string
+          - hint: >-
+              Original text: Tijdens de uitvoering van uw project houden we u op
+              de hoogte van de voortgang en eventuele ontwikkelingen., key:
+              2fb93c9e
+            label: Text
+            name: 2fb93c9e
+            widget: text
+          - hint: >-
+              Original text: Vragen over deze fase? Stel ze hier., key:
+              -2c575ea8
+            label: Text
+            name: '-2c575ea8'
+            widget: string
+          - hint: 'Original text: Oplevering, key: -3e70aee7'
+            label: Text
+            name: '-3e70aee7'
+            widget: string
+          - hint: 'Original text: Tot dat we samen tevreden zijn., key: -31fdb996'
+            label: Text
+            name: '-31fdb996'
+            widget: string
+          - hint: >-
+              Original text: Uiteraard zorgen we er allereerst voor dat we alles
+              netjes en opgeruimd achterlaten. Vervolgens controleren we samen
+              met u het eindresultaat., key: 69f2320
+            label: Text
+            name: 69f2320
+            widget: text
+          - hint: >-
+              Original text: Vragen over de opleveringsfase? Stel ze hier., key:
+              -62e7349d
+            label: Text
+            name: '-62e7349d'
+            widget: string
+          - hint: >-
+              Original text: "Wij hebben ons speelhoekje door Thijs laten maken.
+              Zijn erg blij met het eindresultaat! Thijs denkt goed mee over de
+              mogelijkheden en is erg secuur als het gaat om een nette afwerking
+              tot in de details.", key: -1bc5b22e
+            label: Text
+            name: '-1bc5b22e'
+            widget: text
+          - hint: 'Original text: Tamara Blommaert, key: -475500c5'
+            label: Text
+            name: '-475500c5'
+            widget: string
+          - hint: 'Original text: Nette Speelhoek, key: 6aa6cbaa'
+            label: Text
+            name: 6aa6cbaa
+            widget: string
+          - hint: >-
+              Original text: "Samen met Thijs hebben we onze wensen voor de
+              overkapping besproken. Op basis van onze wensen is een ontwerp
+              gemaakt. Toen alle materialen binnen waren is de overkapping in 2
+              dagen geplaatst. Deze manier van ontwerp planning en realisatie
+              was erg prettig. Met het resultaat zijn we superblij.", key:
+              -dd31174
+            label: Text
+            name: '-dd31174'
+            widget: text
+          - hint: 'Original text: Nellie Bots, key: 7f303eb9'
+            label: Text
+            name: 7f303eb9
+            widget: string
+          - hint: 'Original text: Overkapping, key: 15d2b6d8'
+            label: Text
+            name: 15d2b6d8
+            widget: string
+          - hint: 'Original text: Een project in gedachten?, key: -2f38229c'
+            label: Text
+            name: '-2f38229c'
+            widget: string
+          - hint: 'Original text: Ik informeer u graag vrijblijvend, key: -6f130bcf'
+            label: Text
+            name: '-6f130bcf'
+            widget: string
+          - hint: 'Original text: over de mogelijkheden. , key: 21df991'
+            label: Text
+            name: 21df991
+            widget: string
+          - hint: 'Original text: Klik hier!, key: 127f0876'
+            label: Text
+            name: 127f0876
+            widget: string
+          - hint: >-
+              Original text: Op maat gemaakt & met aandacht voor detail, key:
+              12c31d19
+            label: Text
+            name: 12c31d19
+            widget: string
+          - hint: 'Original text: All, key: 10181'
+            label: Text
+            name: '10181'
+            widget: string
+          - hint: 'Original text: No items found., key: 3d503d2b'
+            label: Text
+            name: 3d503d2b
+            widget: string
+          - hint: 'Original text: Is it really unlimited requests?, key: -286847ba'
+            label: Text
+            name: '-286847ba'
+            widget: string
+          - hint: 'Original text: How fast will I recieve my design?, key: -3d9b085d'
+            label: Text
+            name: '-3d9b085d'
+            widget: string
+          - hint: 'Original text: How do I request designs?, key: -ef4d069'
+            label: Text
+            name: '-ef4d069'
+            widget: string
+          - hint: 'Original text: What programs do you design in?, key: 3762b879'
+            label: Text
+            name: 3762b879
+            widget: string
+          - hint: 'Original text: Who are the designers?, key: 7ca09c74'
+            label: Text
+            name: 7ca09c74
+            widget: string
+          - hint: >-
+              Original text: Hopelijk kunnen wij onze passie voor interieurbouw
+              koppelen aan uw wens!, key: 1f42ae3a
+            label: Text
+            name: 1f42ae3a
+            widget: string
+          - hint: >-
+              Original text: Als snelheid gewenst is kunt u het beste contact
+              opnemen via:, key: -266acbba
+            label: Text
+            name: '-266acbba'
+            widget: string
+          - hint: 'Original text: +31(0)6 4605 3317, key: 2e8bbedd'
+            label: Text
+            name: 2e8bbedd
+            widget: string
+          - hint: 'Original text: Neem contact op, key: -7d64541e'
+            label: Text
+            name: '-7d64541e'
+            widget: string
+          - hint: 'Original text: thijs@kronenbergprojecten.nl, key: 13078013'
+            label: Text
+            name: '13078013'
+            widget: string
+          - hint: 'Original text: Instagram, key: 792b2792'
+            label: Text
+            name: 792b2792
+            widget: string
+          - hint: 'Original text: © 2023 Kronenberg Interieurbouw, key: -d926deb'
+            label: Text
+            name: '-d926deb'
+            widget: string
+          - hint: 'Original text: Algemene Voorwaarden, key: -27bb6d32'
+            label: Text
+            name: '-27bb6d32'
+            widget: string
+          - hint: 'Original text: Privacy, key: 5079bb68'
+            label: Text
+            name: 5079bb68
+            widget: string
+          - hint: 'Original text: Navigation, key: -1a2819cc'
+            label: Text
+            name: '-1a2819cc'
+            widget: string
+          - hint: 'Original text: 01, key: 601'
+            label: Text
+            name: '601'
+            widget: string
+          - hint: 'Original text: Home, key: 2268ff'
+            label: Text
+            name: 2268ff
+            widget: string
+          - hint: 'Original text: 02, key: 602'
+            label: Text
+            name: '602'
+            widget: string
+          - hint: 'Original text: 03, key: 603'
+            label: Text
+            name: '603'
+            widget: string
+          - hint: 'Original text: 04, key: 604'
+            label: Text
+            name: '604'
+            widget: string
+          - hint: 'Original text: Protected Page, key: -11d4bbff'
+            label: Text
+            name: '-11d4bbff'
+            widget: string
+          - hint: >-
+              Original text: Incorrect password. Please try again., key:
+              -f5c4b5f
+            label: Text
+            name: '-f5c4b5f'
+            widget: string
+          - hint: 'Original text: Page Not Found, key: -40b0787c'
+            label: Text
+            name: '-40b0787c'
+            widget: string
+          - hint: >-
+              Original text: The page you are looking for doesn't exist or has
+              been moved, key: 556d64d8
+            label: Text
+            name: 556d64d8
+            widget: string
+          - hint: 'Original text: Go Home, key: 6b29b517'
+            label: Text
+            name: 6b29b517
+            widget: string
+          - hint: 'Original text: Passie gevonden, key: -474d60d7'
+            label: Text
+            name: '-474d60d7'
+            widget: string
+          - hint: >-
+              Original text: Kronenberg Projecten & Interieurbouw is ontstaan
+              uit de passie van Thijs Kronenberg voor interieurbouw. , key:
+              1865a9b9
+            label: Text
+            name: 1865a9b9
+            widget: text
+          - hint: 'Original text: Mijn verhaal, key: 4f2230e7'
+            label: Text
+            name: 4f2230e7
+            widget: string
+          - hint: 'Original text: Via evenementen terug naar het hout, key: -4f608aa2'
+            label: Text
+            name: '-4f608aa2'
+            widget: string
+          - hint: >-
+              Original text: Na het behalen van zijn diploma voor hout- en
+              meubelbewerking, heeft hij geruime tijd gewerkt in de
+              evenementenwereld. Daar kwam hij, via zijn werkgever, steeds vaker
+              in aanraking met het maken van op maat gemaakte meubels, wat zijn
+              passie voor interieurbouw weer aanwakkerde., key: 1b5d6caa
+            label: Text
+            name: 1b5d6caa
+            widget: text
+          - hint: >-
+              Original text: In augustus 2021 nam hij de grote stap om voor
+              zichzelf te beginnen. Bij Kronenberg Projecten en Interieurbouw
+              kun je terecht voor prachtige op maat gemaakte interieurs, houten
+              overkappingen in de tuin, mooie binnendeuren en nog veel meer. We
+              hechten waarde aan nauwkeurigheid en oog voor detail., key:
+              ed907d5
+            label: Text
+            name: ed907d5
+            widget: text
+          - hint: >-
+              Original text: Simone Kronenberg, de vrouw van Thijs, beheert de
+              communicatiekanalen en biedt administratieve ondersteuning. Via
+              deze kanalen komen we graag met u in contact om te kijken wat we
+              voor u kunnen betekenen., key: -28c18af8
+            label: Text
+            name: '-28c18af8'
+            widget: text
+          - hint: >-
+              Original text: Vul het formulier in en ik antwoord zo snel en zo
+              compleet mogelijk., key: -22b2e715
+            label: Text
+            name: '-22b2e715'
+            widget: string
+          - hint: 'Original text: Naam, key: 24ed3f'
+            label: Text
+            name: 24ed3f
+            widget: string
+          - hint: 'Original text: E-mail, key: 786b8a3f'
+            label: Text
+            name: 786b8a3f
+            widget: string
+          - hint: 'Original text: Telefoonnummer, key: 5a7c2646'
+            label: Text
+            name: 5a7c2646
+            widget: string
+          - hint: 'Original text: Waar bent u naar op zoek?, key: -1d0ddd5c'
+            label: Text
+            name: '-1d0ddd5c'
+            widget: string
+          - hint: 'Original text: 05, key: 605'
+            label: Text
+            name: '605'
+            widget: string
+          - hint: 'Original text: Extra, key: 404a3f0'
+            label: Text
+            name: 404a3f0
+            widget: string
+          - hint: 'Original text: Dank voor het invullen!, key: -2e0c5ed3'
+            label: Text
+            name: '-2e0c5ed3'
+            widget: string
+          - hint: >-
+              Original text: Oops! Er is iets misgegaan, controleer nogmaals de
+              velden., key: -7df5540a
+            label: Text
+            name: '-7df5540a'
+            widget: string
+          - hint: >-
+              Original text: We komen graag bij u langs om inzicht te geven in
+              onze diensten en een gesprek te starten., key: -42dd46fb
+            label: Text
+            name: '-42dd46fb'
+            widget: string
+          - hint: 'Original text: Informatie, key: 7a9ad798'
+            label: Text
+            name: 7a9ad798
+            widget: string
+          - hint: 'Original text: Weteringstraat 17, key: -3b667ccc'
+            label: Text
+            name: '-3b667ccc'
+            widget: string
+          - hint: 'Original text: 5555 KM Valkenswaard, key: -4297e8b9'
+            label: Text
+            name: '-4297e8b9'
+            widget: string
+          - hint: 'Original text: -, key: 2d'
+            label: Text
+            name: 2d
+            widget: string
+          - hint: 'Original text: ‍, key: 200d'
+            label: Text
+            name: 200d
+            widget: string
+          - hint: "Original text: KVK\_83554041, key: 22bcb7b4"
+            label: Text
+            name: 22bcb7b4
+            widget: string
+          - hint: 'Original text: BTW NL003664984B67, key: 3c92b08'
+            label: Text
+            name: 3c92b08
+            widget: string
+          - hint: >-
+              Original text: Op maat gemaakt met aandacht voor detail., key:
+              -758b8ad1
+            label: Text
+            name: '-758b8ad1'
+            widget: string
+          - hint: 'Original text: Tijdsspanne, key: -6c887cbb'
+            label: Text
+            name: '-6c887cbb'
+            widget: string
+          - hint: 'Original text: Service, key: -2683a16b'
+            label: Text
+            name: '-2683a16b'
+            widget: string
+          - hint: 'Original text: JAAR, key: 229fa8'
+            label: Text
+            name: 229fa8
+            widget: string
+          - hint: 'Original text: Introductie, key: 7f25aaaa'
+            label: Text
+            name: 7f25aaaa
+            widget: string
+          - hint: 'Original text: Ons geleverde werk, key: -738ccdda'
+            label: Text
+            name: '-738ccdda'
+            widget: string
+          - hint: 'Original text: Vragen of verzoeken?, key: -67647a14'
+            label: Text
+            name: '-67647a14'
+            widget: string
+          - hint: >-
+              Original text: Bel of mail en ik zorg dat ik zo snel mogelijk met
+              een passend antwoord kom!, key: -197d31c8
+            label: Text
+            name: '-197d31c8'
+            widget: string
+          - hint: 'Original text: neem contact op, key: -41f70bfe'
+            label: Text
+            name: '-41f70bfe'
+            widget: string
+          - hint: 'Original text: Andere projecten..., key: 58c19f2b'
+            label: Text
+            name: 58c19f2b
+            widget: string
+          - hint: 'Original text: Bekijk alle projecten, key: -589b0edc'
+            label: Text
+            name: '-589b0edc'
+            widget: string
+          - hint: >-
+              Original text: This template is made with the Finsweet's , key:
+              -8a95f61
+            label: Text
+            name: '-8a95f61'
+            widget: string
+          - hint: 'Original text: Client-first Webflow style system, key: -478e54f2'
+            label: Text
+            name: '-478e54f2'
+            widget: string
+          - hint: 'Original text: ., key: 2e'
+            label: Text
+            name: 2e
+            widget: string
+          - hint: >-
+              Original text: This project contains a style guide page with the
+              pre-built classes that come with the Client-first style system.,
+              key: -7d06d724
+            label: Text
+            name: '-7d06d724'
+            widget: text
+          - hint: >-
+              Original text: There are no pages, no layouts, and nothing to
+              delete. Learn how to take advantage of Client-first , key:
+              76a3c8c5
+            label: Text
+            name: 76a3c8c5
+            widget: text
+          - hint: 'Original text: docs, key: 2f223b'
+            label: Text
+            name: 2f223b
+            widget: string
+          - hint: 'Original text: Style Guide, key: -7aba473'
+            label: Text
+            name: '-7aba473'
+            widget: string
+          - hint: 'Original text: Client-First Version 1.0, key: 507fb359'
+            label: Text
+            name: 507fb359
+            widget: string
+          - hint: 'Original text: HTML Heading Tags, key: 391be0c'
+            label: Text
+            name: 391be0c
+            widget: string
+          - hint: 'Original text: H1, key: 8e9'
+            label: Text
+            name: '8e9'
+            widget: string
+          - hint: >-
+              Original text: Sample text is being used as a placeholder., key:
+              1108a7df
+            label: Text
+            name: 1108a7df
+            widget: string
+          - hint: 'Original text: H2, key: 8ea'
+            label: Text
+            name: 8ea
+            widget: string
+          - hint: >-
+              Original text: Sample text is being used as a placeholder as real
+              text., key: -6c11f3e4
+            label: Text
+            name: '-6c11f3e4'
+            widget: string
+          - hint: 'Original text: H3, key: 8eb'
+            label: Text
+            name: 8eb
+            widget: string
+          - hint: >-
+              Original text: Sample text helps you understand how real text may
+              look on your website., key: 785897ae
+            label: Text
+            name: 785897ae
+            widget: string
+          - hint: 'Original text: H4, key: 8ec'
+            label: Text
+            name: 8ec
+            widget: string
+          - hint: >-
+              Original text: Sample text is being used as a placeholder for real
+              text that is normally present. Sample text helps you understand
+              how real text may look., key: -5fcdceac
+            label: Text
+            name: '-5fcdceac'
+            widget: text
+          - hint: 'Original text: H5, key: 8ed'
+            label: Text
+            name: 8ed
+            widget: string
+          - hint: >-
+              Original text: Sample text is being used as a placeholder for real
+              text that is normally present. Sample text helps you understand
+              how real text may look on your website. Sample text is being used
+              as a placeholder for real text., key: ff56e0c
+            label: Text
+            name: ff56e0c
+            widget: text
+          - hint: 'Original text: H6, key: 8ee'
+            label: Text
+            name: 8ee
+            widget: string
+          - hint: >-
+              Original text: Sample text is being used as a placeholder for real
+              text that is normally present. Sample text helps you understand
+              how real text may look on your website. Sample text is being used
+              as a placeholder for real text that is normally present., key:
+              667d63e4
+            label: Text
+            name: 667d63e4
+            widget: text
+          - hint: 'Original text: Heading Classes, key: 6647fc8'
+            label: Text
+            name: 6647fc8
+            widget: string
+          - hint: 'Original text: heading-xlarge, key: -3e113412'
+            label: Text
+            name: '-3e113412'
+            widget: string
+          - hint: 'Original text: heading-large, key: -2bf8bc50'
+            label: Text
+            name: '-2bf8bc50'
+            widget: string
+          - hint: 'Original text: heading-medium, key: -5137ea60'
+            label: Text
+            name: '-5137ea60'
+            widget: string
+          - hint: 'Original text: heading-small, key: -2b90e284'
+            label: Text
+            name: '-2b90e284'
+            widget: string
+          - hint: 'Original text: heading-xsmall, key: -3da95a46'
+            label: Text
+            name: '-3da95a46'
+            widget: string
+          - hint: 'Original text: Other HTML Tags, key: e88725e'
+            label: Text
+            name: e88725e
+            widget: string
+          - hint: 'Original text: All Paragraphs, key: 5cba4ce4'
+            label: Text
+            name: 5cba4ce4
+            widget: string
+          - hint: 'Original text: All Links, key: 47b903a'
+            label: Text
+            name: 47b903a
+            widget: string
+          - hint: 'Original text: All Quotes, key: -6bd79eea'
+            label: Text
+            name: '-6bd79eea'
+            widget: string
+          - hint: 'Original text: Text Classes, key: -77cc77cd'
+            label: Text
+            name: '-77cc77cd'
+            widget: string
+          - hint: 'Original text: text-size-large , key: -4527a10f'
+            label: Text
+            name: '-4527a10f'
+            widget: string
+          - hint: 'Original text: text-size-medium, key: -4340bddf'
+            label: Text
+            name: '-4340bddf'
+            widget: string
+          - hint: 'Original text: text-size-regular, key: -1c283d90'
+            label: Text
+            name: '-1c283d90'
+            widget: string
+          - hint: 'Original text: text-size-small, key: -75702325'
+            label: Text
+            name: '-75702325'
+            widget: string
+          - hint: 'Original text: text-size-tiny, key: -6f243f54'
+            label: Text
+            name: '-6f243f54'
+            widget: string
+          - hint: 'Original text: text-style-strikethrough, key: -613aa0e9'
+            label: Text
+            name: '-613aa0e9'
+            widget: string
+          - hint: 'Original text: text-style-italic, key: -1e09a194'
+            label: Text
+            name: '-1e09a194'
+            widget: string
+          - hint: 'Original text: text-style-muted, key: -5b95aa51'
+            label: Text
+            name: '-5b95aa51'
+            widget: string
+          - hint: 'Original text: text-style-allcaps, key: -576c60ba'
+            label: Text
+            name: '-576c60ba'
+            widget: string
+          - hint: 'Original text: text-style-nowrap, key: -15bdc639'
+            label: Text
+            name: '-15bdc639'
+            widget: string
+          - hint: 'Original text: text-style-link, key: 4f9fb336'
+            label: Text
+            name: 4f9fb336
+            widget: string
+          - hint: 'Original text: text-style-quote, key: -5b5d5d40'
+            label: Text
+            name: '-5b5d5d40'
+            widget: string
+          - hint: 'Original text: text-style-2lines, key: -7c513db7'
+            label: Text
+            name: '-7c513db7'
+            widget: string
+          - hint: 'Original text: text-style-3lines, key: -7a9c6518'
+            label: Text
+            name: '-7a9c6518'
+            widget: string
+          - hint: >-
+              Original text: Sample text is being used as a placeholder for real
+              text that is normally present. Sample text helps you understand
+              how real text may look on your website. Sample text is being used
+              as a placeholder for real text.dolor sit amet,, key: -18a479d9
+            label: Text
+            name: '-18a479d9'
+            widget: text
+          - hint: 'Original text: Text Weights, key: -6156a2f8'
+            label: Text
+            name: '-6156a2f8'
+            widget: string
+          - hint: 'Original text: text-weight-xbold, key: -6542b3f8'
+            label: Text
+            name: '-6542b3f8'
+            widget: string
+          - hint: 'Original text: text-weight-bold, key: 704ee01a'
+            label: Text
+            name: 704ee01a
+            widget: string
+          - hint: 'Original text: text-weight-semibold, key: -399389f8'
+            label: Text
+            name: '-399389f8'
+            widget: string
+          - hint: 'Original text: text-weight-medium, key: -55b3dc36'
+            label: Text
+            name: '-55b3dc36'
+            widget: string
+          - hint: 'Original text: text-weight-normal, key: -536baec4'
+            label: Text
+            name: '-536baec4'
+            widget: string
+          - hint: 'Original text: text-weight-light, key: -65e8bddf'
+            label: Text
+            name: '-65e8bddf'
+            widget: string
+          - hint: 'Original text: Text Alignments, key: -4799cc3d'
+            label: Text
+            name: '-4799cc3d'
+            widget: string
+          - hint: 'Original text: text-align-left, key: 91bde6f'
+            label: Text
+            name: 91bde6f
+            widget: string
+          - hint: 'Original text: text-align-center, key: 224610bd'
+            label: Text
+            name: 224610bd
+            widget: string
+          - hint: 'Original text: text-align-right, key: 1ab650b4'
+            label: Text
+            name: 1ab650b4
+            widget: string
+          - hint: 'Original text: Text Colors, key: -1c74483d'
+            label: Text
+            name: '-1c74483d'
+            widget: string
+          - hint: 'Original text: text-color-grey, key: -6bdd4457'
+            label: Text
+            name: '-6bdd4457'
+            widget: string
+          - hint: 'Original text: text-color-black, key: -1014878b'
+            label: Text
+            name: '-1014878b'
+            widget: string
+          - hint: 'Original text: Rich Text, key: 41b289f1'
+            label: Text
+            name: 41b289f1
+            widget: string
+          - hint: 'Original text: Heading 1, key: 6af22973'
+            label: Text
+            name: 6af22973
+            widget: string
+          - hint: 'Original text: Heading 2, key: 6af22974'
+            label: Text
+            name: 6af22974
+            widget: string
+          - hint: 'Original text: Heading 3, key: 6af22975'
+            label: Text
+            name: 6af22975
+            widget: string
+          - hint: 'Original text: Heading 4, key: 6af22976'
+            label: Text
+            name: 6af22976
+            widget: string
+          - hint: 'Original text: Heading 5, key: 6af22977'
+            label: Text
+            name: 6af22977
+            widget: string
+          - hint: 'Original text: Heading 6, key: 6af22978'
+            label: Text
+            name: 6af22978
+            widget: string
+          - hint: >-
+              Original text: The rich text element allows you to create and
+              format headings,, key: 730b2c2f
+            label: Text
+            name: 730b2c2f
+            widget: string
+          - hint: 'Original text: This is a link, key: 5443dd2d'
+            label: Text
+            name: 5443dd2d
+            widget: string
+          - hint: 'Original text: This is a placeholder image., key: -395a7a8d'
+            label: Text
+            name: '-395a7a8d'
+            widget: string
+          - hint: 'Original text: Color Palette, key: -4b21e982'
+            label: Text
+            name: '-4b21e982'
+            widget: string
+          - hint: 'Original text: Primary, key: 5075a5e2'
+            label: Text
+            name: 5075a5e2
+            widget: string
+          - hint: 'Original text: Secondary, key: 46b69154'
+            label: Text
+            name: 46b69154
+            widget: string
+          - hint: 'Original text: Text Color, key: -7487e150'
+            label: Text
+            name: '-7487e150'
+            widget: string
+          - hint: 'Original text: Background1, key: -3a24075d'
+            label: Text
+            name: '-3a24075d'
+            widget: string
+          - hint: 'Original text: Background2, key: -3a24075c'
+            label: Text
+            name: '-3a24075c'
+            widget: string
+          - hint: 'Original text: Others, key: -729db07d'
+            label: Text
+            name: '-729db07d'
+            widget: string
+          - hint: 'Original text: Buttons, key: 719b5761'
+            label: Text
+            name: 719b5761
+            widget: string
+          - hint: 'Original text: button, key: -521dd8ce'
+            label: Text
+            name: '-521dd8ce'
+            widget: string
+          - hint: 'Original text: button-secondary, key: -188a5b67'
+            label: Text
+            name: '-188a5b67'
+            widget: string
+          - hint: 'Original text: button-text, key: -6b9f1118'
+            label: Text
+            name: '-6b9f1118'
+            widget: string
+          - hint: 'Original text: Backgrounds, key: -3a24071b'
+            label: Text
+            name: '-3a24071b'
+            widget: string
+          - hint: 'Original text: Icons Sizes, key: -2729fc34'
+            label: Text
+            name: '-2729fc34'
+            widget: string
+          - hint: 'Original text: Icons 1x1 Sizes, key: -7484862a'
+            label: Text
+            name: '-7484862a'
+            widget: string
+          - hint: 'Original text: Social Media Icons, key: -143b2875'
+            label: Text
+            name: '-143b2875'
+            widget: string
+          - hint: 'Original text: Webflow Elements, key: -7c9906eb'
+            label: Text
+            name: '-7c9906eb'
+            widget: string
+          - hint: 'Original text: List, key: 2424be'
+            label: Text
+            name: 2424be
+            widget: string
+          - hint: >-
+              Original text: Sample text is being used as a placeholder for real
+              text that is normally present., key: -6aeb2b17
+            label: Text
+            name: '-6aeb2b17'
+            widget: string
+          - hint: 'Original text: Form, key: 2180e4'
+            label: Text
+            name: '2180e4'
+            widget: string
+          - hint: 'Original text: Text Input, key: -7433b8e9'
+            label: Text
+            name: '-7433b8e9'
+            widget: string
+          - hint: 'Original text: Text Area, key: 360b43a0'
+            label: Text
+            name: 360b43a0
+            widget: string
+          - hint: 'Original text: Select field, key: 2b9f90f6'
+            label: Text
+            name: 2b9f90f6
+            widget: string
+          - hint: 'Original text: Select one..., key: 57f3b1cc'
+            label: Text
+            name: 57f3b1cc
+            widget: string
+          - hint: 'Original text: First Choice, key: -491b32af'
+            label: Text
+            name: '-491b32af'
+            widget: string
+          - hint: 'Original text: Second Choice, key: 3c4172cd'
+            label: Text
+            name: 3c4172cd
+            widget: string
+          - hint: 'Original text: Third Choice, key: -1b351146'
+            label: Text
+            name: '-1b351146'
+            widget: string
+          - hint: 'Original text: Checkbox field, key: -70558183'
+            label: Text
+            name: '-70558183'
+            widget: string
+          - hint: 'Original text: Checkbox, key: 5f757fe3'
+            label: Text
+            name: 5f757fe3
+            widget: string
+          - hint: 'Original text: Radio button, key: 739c6f17'
+            label: Text
+            name: 739c6f17
+            widget: string
+          - hint: 'Original text: Radio, key: 4b123db'
+            label: Text
+            name: 4b123db
+            widget: string
+          - hint: >-
+              Original text: Thank you! Your submission has been received!, key:
+              5a0ea5a1
+            label: Text
+            name: 5a0ea5a1
+            widget: string
+          - hint: >-
+              Original text: Oops! Something went wrong while submitting the
+              form., key: -7c112e99
+            label: Text
+            name: '-7c112e99'
+            widget: string
+      - label: Links
+        name: links
+        file: cms/_data/links.json
+        fields:
+          - label: Title
+            name: title
+            widget: hidden
+            default: Links
+          - hint: 'Original link: /, key: 2f'
+            label: Link
+            name: 2f
+            widget: string
+          - hint: 'Original link: /projecten, key: -5bda45cd'
+            label: Link
+            name: '-5bda45cd'
+            widget: string
+          - hint: 'Original link: /over-ons, key: 5808372a'
+            label: Link
+            name: 5808372a
+            widget: string
+          - hint: 'Original link: /contact, key: 4b0e6111'
+            label: Link
+            name: 4b0e6111
+            widget: string
+          - hint: 'Original link: #one, key: 119763'
+            label: Link
+            name: '119763'
+            widget: string
+          - hint: 'Original link: #two, key: 11ab49'
+            label: Link
+            name: 11ab49
+            widget: string
+          - hint: 'Original link: #three, key: 424d435b'
+            label: Link
+            name: 424d435b
+            widget: string
+          - hint: 'Original link: tel:+31646053317, key: -6ef88167'
+            label: Link
+            name: '-6ef88167'
+            widget: string
+          - hint: >-
+              Original link: mailto:thijs@kronenbergprojecten.nl?subject=Hello!,
+              key: -668615fc
+            label: Link
+            name: '-668615fc'
+            widget: string
+          - hint: >-
+              Original link: https://www.instagram.com/kronenberg_projecten/,
+              key: -5d15988b
+            label: Link
+            name: '-5d15988b'
+            widget: string
+          - hint: >-
+              Original link:
+              /assets/documents/kronenberg-interieurbouw-download-leveringsvoorwaarden.pdf,
+              key: -329c9cb7
+            label: Link
+            name: '-329c9cb7'
+            widget: string
+          - hint: >-
+              Original link:
+              /assets/documents/kronenberg-interieurbouw-privacy-policy.pdf,
+              key: 50dda4b6
+            label: Link
+            name: 50dda4b6
+            widget: string
+          - hint: 'Original link: #scroll, key: 56000b0'
+            label: Link
+            name: 56000b0
+            widget: string
+          - hint: 'Original link: /old-home, key: 41a389f4'
+            label: Link
+            name: 41a389f4
+            widget: string
+          - hint: 'Original link: https://calendly.com/, key: 56fb5933'
+            label: Link
+            name: 56fb5933
+            widget: string
+          - hint: >-
+              Original link: https://www.finsweet.com/client-first/, key:
+              17831110
+            label: Link
+            name: '17831110'
+            widget: string
+          - hint: >-
+              Original link: https://www.finsweet.com/client-first/docs/intro,
+              key: 49f972a8
+            label: Link
+            name: 49f972a8
+            widget: string
+          - hint: 'Original link: https://client-first.webflow.io/, key: -740f2794'
+            label: Link
+            name: '-740f2794'
+            widget: string
+          - hint: 'Original link: #, key: 23'
+            label: Link
+            name: '23'
+            widget: string
+          - hint: 'Original link: http://youtube.com, key: 499802e4'
+            label: Link
+            name: '499802e4'
+            widget: string
+      - label: Images
+        name: images
+        file: cms/_data/images.json
+        fields:
+          - label: Title
+            name: title
+            widget: hidden
+            default: Images
+          - label: Image
+            name: '-7906a7a1'
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: 278cf641
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: '-65f0841b'
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: '-690ad6c1'
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: '-1c4393d0'
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: 4ad40e10
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: '32332168'
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: 887455c
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: '-207b114c'
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: '-897e0e1'
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: 14c85083
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: 4abef31c
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: '-2b1beb3c'
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: '-2d6d86f0'
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: 6685390b
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: '-18534704'
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: '-2d7f87f1'
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: 317f733b
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+publish_mode: editorial_workflow
