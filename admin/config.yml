@@ -766,12 +766,6 @@ collections:
             label: Text
             name: 3c92b08
             widget: string
-          - hint: >-
-              Original text: Op maat gemaakt met aandacht voor detail., key:
-              -758b8ad1
-            label: Text
-            name: '-758b8ad1'
-            widget: string
           - hint: 'Original text: Tijdsspanne, key: -6c887cbb'
             label: Text
             name: '-6c887cbb'
@@ -813,6 +807,12 @@ collections:
           - hint: 'Original text: Bekijk alle projecten, key: -589b0edc'
             label: Text
             name: '-589b0edc'
+            widget: string
+          - hint: >-
+              Original text: Op maat gemaakt met aandacht voor detail., key:
+              -758b8ad1
+            label: Text
+            name: '-758b8ad1'
             widget: string
           - hint: >-
               Original text: This template is made with the Finsweet's , key:
